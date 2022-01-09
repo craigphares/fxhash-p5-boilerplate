@@ -1,29 +1,48 @@
-// these are the variables you can use as inputs to your algorithms
-console.log(fxhash)   // the 64 chars hex number fed to your algorithm
-console.log(fxrand()) // deterministic PRNG function, use it instead of Math.random()
+import p5 from 'p5';
 
-// note about the fxrand() function 
-// when the "fxhash" is always the same, it will generate the same sequence of
-// pseudo random numbers, always
+console.log(fxhash);
 
-//----------------------
-// defining features
-//----------------------
-// You can define some token features by populating the $fxhashFeatures property
-// of the window object.
-// More about it in the guide, section features:
-// [https://fxhash.xyz/articles/guide-mint-generative-token#features]
-//
-// window.$fxhashFeatures = {
-//   "Background": "Black",
-//   "Number of lines": 10,
-//   "Inverted": true
-// }
+new p5((P5) => {   
+  window.p5 = p5;
+  window.P5 = P5;
 
-// this code writes the values to the DOM as an example
-const container = document.createElement("div")
-container.innerText = `
-  random hash: ${fxhash}\n
-  some pseudo random values: [ ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()}, ${fxrand()},... ]\n
-`
-document.body.prepend(container)
+  let seed = P5.int(fxrand() * 100000000);
+  P5.randomSeed(seed);
+  P5.noiseSeed(seed);
+
+  let DEFAULT_SIZE = 1000;
+  let WIDTH;
+  let HEIGHT;
+  let DIM;
+  let M;
+
+  window.$fxhashFeatures = {
+
+  };
+
+  P5.setup = () => {
+    setupSize();
+    P5.createCanvas(WIDTH, HEIGHT);
+  }
+
+
+  P5.draw = () => {
+    
+  }
+
+  P5.windowResized = () => {
+    setupSize();
+    P5.resizeCanvas(WIDTH, HEIGHT);
+    P5.redraw();
+  }
+
+  let setupSize = () => {
+    WIDTH = P5.windowWidth;
+    HEIGHT = P5.windowHeight;
+    DIM = P5.min(WIDTH, HEIGHT);
+    M = DIM / DEFAULT_SIZE;
+  }
+
+});
+
+console.log($fxhashFeatures);
